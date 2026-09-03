@@ -252,8 +252,8 @@ function intentarLogin(){
   if(!valor){ return; }
   guardarSesion_(valor);
   ocultarLogin();
-  const v = document.getElementById('fechaSnapshot').value;
-  cargarDatos(v ? inputToDDMMYYYY(v) : null, false);
+  document.getElementById('fechaSnapshot').value = '';
+  cargarDatos(null, false);
 }
 
 function render(data){
