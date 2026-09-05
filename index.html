@@ -766,6 +766,7 @@ document.getElementById('btnActualizar').addEventListener('click', () => {
   cargarDatos(v ? inputToDDMMYYYY(v) : null, sinCache);
 });
 
+window.addEventListener('load', function() {
 const sesionInicial = obtenerCodigoValido_();
 if(sesionInicial.codigo){
   ocultarLogin();
@@ -774,6 +775,7 @@ if(sesionInicial.codigo){
 } else {
   mostrarLogin(sesionInicial.caducado ? 'Tu sesión ha caducado por tiempo de inactividad. Introduce el código de nuevo.' : '');
 }
+});
 
 async function cargarInformesDisponibles(codigo){
   try{
