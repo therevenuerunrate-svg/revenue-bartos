@@ -377,6 +377,7 @@ function render(data){
   `;
 
   renderKPIs(data.ytd);
+  console.log('render ejecutado, ytd:', data.ytd, 'snap:', data.snapshotUsado2026);
   try { renderChart(data.comparativaMensual); } catch(e) { console.error('renderChart:', e); }
   try { renderTablaMensual(data.comparativaMensual); } catch(e) { console.error('renderTablaMensual:', e); }
   try { renderPickup(data.pickup90); } catch(e) { console.error('renderPickup:', e); }
@@ -509,6 +510,10 @@ function renderSelectorMesPace(mesSeleccionado){
 
 function renderKPIs(ytd){
   const grid = document.getElementById('kpiGrid');
+  if(!ytd || !ytd.y2026){
+    grid.innerHTML = '<div class="kpi-card"><div class="label">Sin datos YTD disponibles</div></div>';
+    return;
+  }
   const items = [
     { label:'Ocupación YTD', v:ytd.y2026.occPct, prev:ytd.y2025.occPct, fmt:fmtPct, isPP:true },
     { label:'ADR medio YTD', v:ytd.y2026.adr, prev:ytd.y2025.adr, fmt:fmtADR },
