@@ -5,17 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revenue Dashboard · Hotel Bartos</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
-<script>
-  // Fallback si jsdelivr falla: intentar cdnjs
-  window.addEventListener('error', function(e){
-    if(e.target && e.target.src && e.target.src.includes('chart.js') || e.target.src && e.target.src.includes('chart.umd')){
-      var s = document.createElement('script');
-      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js';
-      document.head.appendChild(s);
-    }
-  }, true);
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
 <style>
   :root{
     --navy:#222D63;
@@ -766,17 +756,14 @@ document.getElementById('btnActualizar').addEventListener('click', () => {
   cargarDatos(v ? inputToDDMMYYYY(v) : null, sinCache);
 });
 
-// Inicialización: pequeño delay para garantizar que Chart.js esté disponible
-setTimeout(function() {
-  const sesionInicial = obtenerCodigoValido_();
-  if(sesionInicial.codigo){
-    ocultarLogin();
-    cargarDatos(null, false);
-    cargarInformesDisponibles(sesionInicial.codigo);
-  } else {
-    mostrarLogin(sesionInicial.caducado ? 'Tu sesión ha caducado por tiempo de inactividad. Introduce el código de nuevo.' : '');
-  }
-}, 100);
+const sesionInicial = obtenerCodigoValido_();
+if(sesionInicial.codigo){
+  ocultarLogin();
+  cargarDatos(null, false);
+  cargarInformesDisponibles(sesionInicial.codigo);
+} else {
+  mostrarLogin(sesionInicial.caducado ? 'Tu sesión ha caducado por tiempo de inactividad. Introduce el código de nuevo.' : '');
+}
 
 async function cargarInformesDisponibles(codigo){
   try{
