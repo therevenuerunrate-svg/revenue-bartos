@@ -379,14 +379,14 @@ function render(data){
   `;
 
   renderKPIs(data.ytd);
-  renderChart(data.comparativaMensual);
-  renderTablaMensual(data.comparativaMensual);
-  renderPickup(data.pickup90);
-  renderSelectorMesPace(data.mesPaceSeleccionado);
-  renderPaceChart(data.paceCurve);
-  renderAntelacion(data.antelacionMedia);
-  renderConcentracion(data.concentracion);
-  renderProyeccion(data.proyeccion2026);
+  try { renderChart(data.comparativaMensual); } catch(e) { console.error('renderChart:', e); }
+  try { renderTablaMensual(data.comparativaMensual); } catch(e) { console.error('renderTablaMensual:', e); }
+  try { renderPickup(data.pickup90); } catch(e) { console.error('renderPickup:', e); }
+  try { renderSelectorMesPace(data.mesPaceSeleccionado); } catch(e) { console.error('renderSelectorMesPace:', e); }
+  try { renderPaceChart(data.paceCurve); } catch(e) { console.error('renderPaceChart:', e); }
+  try { renderAntelacion(data.antelacionMedia); } catch(e) { console.error('renderAntelacion:', e); }
+  try { renderConcentracion(data.concentracion); } catch(e) { console.error('renderConcentracion:', e); }
+  try { renderProyeccion(data.proyeccion2026); } catch(e) { console.error('renderProyeccion:', e); }
 }
 
 function renderAntelacion(meses){
