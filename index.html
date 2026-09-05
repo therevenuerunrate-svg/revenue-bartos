@@ -86,6 +86,12 @@
   .loading, .error{padding:60px 20px;text-align:center;color:var(--text-dim);}
   .error{color:var(--orange);}
 
+
+  .downloads-box{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:16px 18px;margin-bottom:28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .downloads-box .dl-label{font-size:13px;color:var(--text-dim);white-space:nowrap;}
+  .downloads-box select{background:var(--navy-deep);border:1px solid var(--card-border);color:var(--white);padding:8px 12px;border-radius:8px;font-family:inherit;font-size:14px;min-width:220px;}
+  .downloads-box button{background:var(--orange);color:var(--white);border:none;padding:9px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;}
+  .downloads-box button:hover{opacity:.9;}
   footer{margin-top:40px;font-size:12px;color:var(--text-dim);text-align:center;border-top:1px solid var(--card-border);padding-top:16px;}
 
   .downloads-box{
@@ -147,6 +153,12 @@
   </div>
 
   <div class="downloads-box" id="downloadsBox">
+    <span class="dl-label">📄 Informe mensual (PDF):</span>
+    <select id="selInforme"></select>
+    <button id="btnDescargar">Descargar</button>
+  </div>
+
+  <div class="downloads-box" id="downloadsBox" style="display:none;">
     <span class="dl-label">📄 Informe mensual (PDF):</span>
     <select id="selInforme"></select>
     <button id="btnDescargar">Descargar</button>
@@ -791,6 +803,28 @@ async function cargarInformesDisponibles(codigo){
   }
 }
 
+document.getElementById('btnDescargar').addEventListener('click', () => {
+  const sel = document.getElementById('selInforme');
+  if(sel.value) window.open(sel.value, '_blank');
+});
+
+async function cargarInformesDisponibles(codigo){
+  try{
+    const qs = new URLSearchParams();
+    qs.set('codigo', codigo);
+    qs.set('accion', 'listaInformes');
+    const res = await fetch(PROXY_URL + '?' + qs.toString());
+    const data = await res.json();
+    if(!data || !data.ok || !Array.isArray(data.informes) || data.informes.length === 0) return;
+    const informes = data.informes.slice().sort((a,b) => new Date(b.fechaPublicacion||0)-new Date(a.fechaPublicacion||0));
+    const sel = document.getElementById('selInforme');
+    sel.innerHTML = informes.map((inf,i) =>
+      `<option value="${inf.url}">${inf.mes} ${inf.anio}${i===0?' (más reciente)':''}</option>`
+    ).join('');
+    const box = document.getElementById('downloadsBox');
+    box.style.display = 'flex';
+  }catch(e){ console.warn('No se pudo cargar lista de informes:', e); }
+}
 document.getElementById('btnDescargar').addEventListener('click', () => {
   const sel = document.getElementById('selInforme');
   if(sel.value) window.open(sel.value, '_blank');
